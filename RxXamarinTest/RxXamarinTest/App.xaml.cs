@@ -24,13 +24,16 @@ namespace RxXamarinTest
         {
             InitializeComponent();
 
-            await NavigationService.NavigateAsync("NavigationPage/MainPage");
+            await NavigationService.NavigateAsync("MyMasterDetailPage/MyNavigationPage/MainPage");
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<MainPage>();
+
+            containerRegistry.RegisterForNavigation<MyMasterDetailPage, MyMasterDetailPageViewModel>();
+            containerRegistry.RegisterForNavigation<MyNavigationPage, MyNavigationPageViewModel>();
         }
     }
 }
