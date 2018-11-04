@@ -34,6 +34,7 @@ namespace RxXamarinTest
 
             containerRegistry.RegisterForNavigation<MyMasterDetailPage, MyMasterDetailPageViewModel>();
             containerRegistry.RegisterForNavigation<MyNavigationPage, MyNavigationPageViewModel>();
+            containerRegistry.RegisterForNavigation<ClosePopupPage, ClosePopupPageViewModel>();
         }
     }
 }

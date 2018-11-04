@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<pages:PopupPage
+    x:Class="RxXamarinTest.Views.ClosePopupPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+    xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+    xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+    prism:ViewModelLocator.AutowireViewModel="True">
+
+    <pages:PopupPage.Animation>
+        <animations:ScaleAnimation
+            DurationIn="600"
+            DurationOut="500"
+            EasingIn="SinOut"
+            EasingOut="SinIn"
+            HasBackgroundAnimation="True"
+            PositionIn="Bottom"
+            PositionOut="Bottom"
+            ScaleIn="1.2"
+            ScaleOut="0.8" />
+    </pages:PopupPage.Animation>
+
+    <Frame
+        BackgroundColor="DarkSlateGray"
+        CornerRadius="15"
+        HasShadow="True"
+        HorizontalOptions="Center"
+        MinimumHeightRequest="300"
+        MinimumWidthRequest="300"
+        VerticalOptions="Center">
+
+        <Label Text="do you want to close the App?" TextColor="Wheat" />
+
+    </Frame>
+</pages:PopupPage>

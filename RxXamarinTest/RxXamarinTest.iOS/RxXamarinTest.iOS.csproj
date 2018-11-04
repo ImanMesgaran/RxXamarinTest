@@ -192,6 +192,9 @@
     <PackageReference Include="Prism.Forms">
       <Version>7.1.0.431</Version>
     </PackageReference>
+    <PackageReference Include="Prism.Plugin.Popups">
+      <Version>2.1.0.228</Version>
+    </PackageReference>
     <PackageReference Include="System.Reactive">
       <Version>3.1.1</Version>
     </PackageReference>

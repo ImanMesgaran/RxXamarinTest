@@ -21,6 +21,8 @@ namespace RxXamarinTest.iOS
         //
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
+            Rg.Plugins.Popup.Popup.Init();
+
             global::Xamarin.Forms.Forms.Init();
             LoadApplication(new App(new iOSInitializer()));
 
@@ -30,9 +32,6 @@ namespace RxXamarinTest.iOS
 
     public class iOSInitializer : IPlatformInitializer
     {
-        public void RegisterTypes(IContainerRegistry container)
-        {
-
-        }
+        public void RegisterTypes(IContainerRegistry container) { }
     }
 }

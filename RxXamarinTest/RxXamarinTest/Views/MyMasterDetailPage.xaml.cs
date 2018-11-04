@@ -1,14 +1,28 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
+using System.Reactive.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Prism.Services;
+using Rg.Plugins.Popup.Extensions;
+using Rg.Plugins.Popup.Pages;
 using RxXamarinTest.ViewModels;
 using Xamarin.Forms;
 
 namespace RxXamarinTest.Views
 {
-    public partial class MyMasterDetailPage : MasterDetailPage/*, IPageDialogService*/
+    public partial class MyMasterDetailPage : MasterDetailPage/*, IPageDialogService*/ , INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+
+
         private IPageDialogService _pageDialogService;
 
         public long doublePressInterval_ms = 300;
@@ -20,11 +34,20 @@ namespace RxXamarinTest.Views
         //    set { SetProperty(ref _lastPressTime, value); }
         //}
 
-        public MyMasterDetailPage(IPageDialogService pageDialogService)
+        public MyMasterDetailPage(/*IPageDialogService pageDialogService*/)
         {
             InitializeComponent();
 
-            _pageDialogService = pageDialogService;
+            //_pageDialogService = pageDialogService;
+        }
+
+        public static void callBackButton() {
+            MyMasterDetailPage master=new MyMasterDetailPage();
+            master.callBack();
+        }
+
+        public void callBack() {
+            OnBackButtonPressed();
         }
 
         //        protected override bool OnBackButtonPressed() {
@@ -109,23 +132,100 @@ namespace RxXamarinTest.Views
 
         #region Back Button
 
-        protected override bool OnBackButtonPressed()
-        {
-            DateTime pressTime = DateTime.Now;
-            //if ((pressTime - _lastPressTime).TotalMilliseconds <= doublePressInterval_ms)
+        //protected override bool OnBackButtonPressed()
+        //{
+        //    DateTime pressTime = DateTime.Now;
+        //    //if ((pressTime - _lastPressTime).TotalMilliseconds <= doublePressInterval_ms)
 
-            Task.Run(async () => await DisplayAlert("title","wanna close?" , "ok"));
-            if ((pressTime - _lastPressTime).TotalSeconds <= 2)
-            {
-                Debug.WriteLine("close the app By Double back Button");
-                
-                return false;
-            }
+        //    Task.Run(async () => await DisplayAlert("title","wanna close?" , "ok"));
+        //    if ((pressTime - _lastPressTime).TotalSeconds <= 2)
+        //    {
+        //        Debug.WriteLine("close the app By Double back Button");
 
-            _lastPressTime = pressTime;
+        //        return false;
+        //    }
 
+        //    _lastPressTime = pressTime;
+
+        //    return true;
+        //}
+
+        //protected override bool OnBackButtonPressed() {
+        //    // Open a PopupPage
+        //    Navigation.PushPopupAsync(new ClosePopupPage());
+
+        //    return true;
+        //    //return base.OnBackButtonPressed();
+        //}
+
+
+        #region test 1
+        /*
+        public long doublePressInterval_s = 2;
+        public DateTime _lastClickTime { get; set; }
+
+        protected override bool OnBackButtonPressed() {
+            DateTime now = DateTime.Now;
+            var minus = now.Subtract(_lastClickTime).TotalSeconds;
+            if (minus < doublePressInterval_s) { return false; }
+
+            _lastClickTime = DateTime.Now;
+            DisplayAlert("do you want TITLE" , "do you want to close?" , "cancel");
             return true;
         }
+        */
+        #endregion test1
+
+        #region test2
+        /*
+        private bool _isClicked;
+        public bool IsClicked
+        {
+            get { return _isClicked; }
+            set
+            {
+                if (_isClicked != value)
+                {
+                    _isClicked = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
+            var result = Observable
+                .FromEventPattern<PropertyChangedEventArgs>(this, nameof(PropertyChanged))
+                .Where(x => x.EventArgs.PropertyName == nameof(SearchBoxText))
+                // slow it down
+                .Throttle(TimeSpan.FromMilliseconds(700));
+
+            return base.OnBackButtonPressed();
+        }
+        */
+        #endregion test2
+
+        #region test3
+
+        protected override bool OnBackButtonPressed() {
+            bool dialogResult = true;
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                var result = await DisplayAlert("Alert!", "Do you really want to exit the application?", "Yes", "No");
+                if (result)
+                {
+                    //if (Device.OS == TargetPlatform.Android)
+                    //{
+                    //    Android.OS.Process.KillProcess(Android.OS.Process.MyPid());
+                    //}
+                    dialogResult = false;/* return true;*/
+                }
+            });
+
+            return dialogResult;
+        }
+
+        #endregion
 
         #endregion
     }
